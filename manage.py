@@ -16,13 +16,14 @@ def main():
     # Set the port for Render.com
     port = os.environ.get('PORT', '8000')
     
-    # Check if 'runserver' is in the command and if there is enough space to insert the port
+    # Modify sys.argv to include the port if 'runserver' is in the command
     if 'runserver' in sys.argv:
         runserver_index = sys.argv.index('runserver')
-        if len(sys.argv) == runserver_index + 1:
-            sys.argv.append(f'0.0.0.0:{port}')
-        else:
+        # Check if there is an argument after 'runserver' and if it's a port specification
+        if len(sys.argv) > runserver_index + 1 and ':' not in sys.argv[runserver_index + 1]:
             sys.argv[runserver_index + 1] = f'0.0.0.0:{port}'
+        else:
+            sys.argv.append(f'0.0.0.0:{port}')
     
     execute_from_command_line(sys.argv)
 
