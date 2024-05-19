@@ -235,7 +235,7 @@ def add_to_cart_view(request,pk):
     else:
         product_count_in_cart=1
 
-    response = render(request, 'ecom/index.html',{'products':products,'product_count_in_cart':product_count_in_cart})
+    response = render(request, 'GroceryStoree/ecom/index.html',{'products':products,'product_count_in_cart':product_count_in_cart})
 
     #adding product id to cookies
     if 'product_ids' in request.COOKIES:
@@ -320,7 +320,7 @@ def remove_from_cart_view(request,pk):
                 value=value+product_id_in_cart[0]
             else:
                 value=value+"|"+product_id_in_cart[i]
-        response = render(request, 'ecom/cart.html',{'products':products,'total':total,'product_count_in_cart':product_count_in_cart})
+        response = render(request, 'GroceryStoree/ecom/cart.html',{'products':products,'total':total,'product_count_in_cart':product_count_in_cart})
         if value=="":
             response.delete_cookie('product_ids')
         response.set_cookie('product_ids',value)
@@ -393,7 +393,7 @@ def customer_address_view(request):
                     for p in products:
                         total=total+p.price
 
-            response = render(request, 'ecom/payment.html',{'total':total})
+            response = render(request, 'GroceryStoree/ecom/payment.html',{'total':total})
             response.set_cookie('email',email)
             response.set_cookie('mobile',mobile)
             response.set_cookie('address',address)
@@ -439,7 +439,7 @@ def payment_success_view(request):
         models.Orders.objects.get_or_create(customer=customer,product=product,status='Pending',email=email,mobile=mobile,address=address)
 
     # after order placed cookies should be deleted
-    response = render(request,'ecom/payment_success.html')
+    response = render(request,'GroceryStoree/ecom/payment_success.html')
     response.delete_cookie('product_ids')
     response.delete_cookie('email')
     response.delete_cookie('mobile')
