@@ -117,7 +117,7 @@ pbr==6.0.0
 pep8==1.7.1
 pickleshare==0.7.5
 Pillow==10.0.1
-pipwin==0.5.2
+
 platformdirs==3.11.0
 prometheus-client==0.17.1
 prompt-toolkit==3.0.39
