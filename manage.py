@@ -1,6 +1,8 @@
 #!/usr/bin/env python
+"""Django's command-line utility for administrative tasks."""
 import os
 import sys
+
 
 def main():
     os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'ecommerce.settings')
@@ -12,20 +14,8 @@ def main():
             "available on your PYTHONPATH environment variable? Did you "
             "forget to activate a virtual environment?"
         ) from exc
-
-    # Set the port for Render.com
-    port = os.environ.get('PORT', '8000')
-
-    # Modify sys.argv to include the port if 'runserver' is in the command
-    if 'runserver' in sys.argv:
-        addrport_index = sys.argv.index('runserver') + 1
-        # Check if the 'runserver' argument has been provided with the port already
-        if len(sys.argv) > addrport_index and ':' not in sys.argv[addrport_index]:
-            sys.argv[addrport_index] = f'0.0.0.0:{port}'
-        else:
-            sys.argv.insert(addrport_index, f'0.0.0.0:{port}')
-
     execute_from_command_line(sys.argv)
+
 
 if __name__ == '__main__':
     main()
