@@ -4,6 +4,10 @@ import os
 import sys
 
 
+#!/usr/bin/env python
+import os
+import sys
+
 def main():
     os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'ecommerce.settings')
     try:
@@ -14,8 +18,13 @@ def main():
             "available on your PYTHONPATH environment variable? Did you "
             "forget to activate a virtual environment?"
         ) from exc
-    execute_from_command_line(sys.argv)
 
+    # Set the port for Render.com
+    port = os.environ.get('PORT', '8000')
+    if 'runserver' in sys.argv:
+        sys.argv[sys.argv.index('runserver') + 1] = f'0.0.0.0:{port}'
+    
+    execute_from_command_line(sys.argv)
 
 if __name__ == '__main__':
     main()
