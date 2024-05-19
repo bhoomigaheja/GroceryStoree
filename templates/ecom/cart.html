@@ -2,113 +2,158 @@
 {% load static %}
 {% block content %}
 
-
 <head>
-  <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
-  <script src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
-  <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
-<style media="screen">
-  .button {
-  display: inline-block;
-  border-radius: 4px;
-  background-color: #f4511e;
-  border: none;
-  color: #FFFFFF;
-  text-align: center;
-  font-size: 28px;
-  padding: 20px;
-  width: 200px;
-  transition: all 0.5s;
-  cursor: pointer;
-  margin: 5px;
-}
+    <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+    <script src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
+    <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+    <style media="screen">
+        .button {
+            display: inline-block;
+            border-radius: 4px;
+            background-color: #f4511e;
+            border: none;
+            color: #FFFFFF;
+            text-align: center;
+            font-size: 28px;
+            padding: 20px;
+            width: 200px;
+            transition: all 0.5s;
+            cursor: pointer;
+            margin: 5px;
+        }
 
-.button span {
-  cursor: pointer;
-  display: inline-block;
-  position: relative;
-  transition: 0.5s;
-}
+        .button span {
+            cursor: pointer;
+            display: inline-block;
+            position: relative;
+            transition: 0.5s;
+        }
 
-.button span:after {
-  content: '\00bb';
-  position: absolute;
-  opacity: 0;
-  top: 0;
-  right: -20px;
-  transition: 0.5s;
-}
+        .button span:after {
+            content: '\00bb';
+            position: absolute;
+            opacity: 0;
+            top: 0;
+            right: -20px;
+            transition: 0.5s;
+        }
 
-.button:hover span {
-  padding-right: 25px;
-}
+        .button:hover span {
+            padding-right: 25px;
+        }
 
-.button:hover span:after {
-  opacity: 1;
-  right: 0;
-}
+        .button:hover span:after {
+            opacity: 1;
+            right: 0;
+        }
 
-.button2 {
-  background-color: white;
-  color: black;
-  border: 2px solid #008CBA;
-}
+        .button2 {
+            background-color: white;
+            color: black;
+            border: 2px solid #008CBA;
+        }
 
-.button2:hover {
-  background-color: #008CBA;
-  color: white;
-}
-
-</style>
-
+        .button2:hover {
+            background-color: #008CBA;
+            color: white;
+        }
+    </style>
 </head>
 <br><br><br><br>
 
 <div class="container">
-  <div class="panel panel-success">
-    <div class="panel-heading">
-      <h6 style="text-align:center;" class="panel-title">My Cart</h6>
+    <div class="panel panel-success">
+        <div class="panel-heading">
+            <h6 style="text-align:center;" class="panel-title">My Cart</h6>
+        </div>
+        <table class="table table-hover table-bordered" id="dev-table">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Image</th>
+                    <th>Price</th>
+                    <th>Quantity</th>
+                    <th>Total Price</th>
+                    <th>Description</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for p in products %}
+                {% if p %}
+                <tr data-id="{{ p.id }}">
+                    <td>{{ p.name }}</td>
+                    <td><img src="{% static p.product_image.url %}" alt="Product Image" height="50px" width="50px" /></td>
+                    <td>Rs <span class="unit-price">{{ p.price }}</span></td>
+                    <td>
+                        <button class="btn btn-secondary btn-sm decrease-quantity" data-id="{{ p.id }}">-</button>
+                        <input type="number" class="quantity" min="1" value="{{ p.quantity }}" data-id="{{ p.id }}" readonly>
+                        <button class="btn btn-secondary btn-sm increase-quantity" data-id="{{ p.id }}">+</button>
+                    </td>
+                    <td>Rs <span class="total-price">{{ p.total_price }}</span></td>
+                    <td>{{ p.description }}</td>
+                    <td><a class="btn btn-danger btn-xs" href="{% url 'remove-from-cart' p.id %}"><span class="glyphicon glyphicon-trash"></span></a></td>
+                </tr>
+                {% else %}
+                <tr>
+                    <td colspan="7"><h1>No products</h1></td>
+                </tr>
+                {% endif %}
+                {% endfor %}
+            </tbody>
+        </table>
     </div>
-    <table class="table table-hover table-bordered" id="dev-table">
-      <thead>
-        <tr>
-          <th>Name</th>
-          <th>Image</th>
-          <th>Price</th>
-          <th>Description</th>
-          <th>Action</th>
-
-        </tr>
-      </thead>
-      {% for p in products %}
-  {% if p %}
-
-      <tr>
-        <td> {{p.name}}</td>
-        <td> <img src="{% static p.product_image.url %}" alt="Profile Pic" height="50px" width="50px" /></td>
-        <td>$ {{p.price}}</td>
-        <td>{{p.description}}</td>
-
-        <td><a class="btn btn-danger btn-xs" href="{% url 'remove-from-cart' p.id  %}"><span class="glyphicon glyphicon-trash"></span></a></td>
-
-      </tr>
-      {%else%}
-      <br><br><br>
-      <h1>no products</h1>
-      {% endif %}
-      {% endfor %}
-    </table>
-  </div>
 </div>
 <br><br><br>
 <div style="text-align: center;">
-  <button class="btn btn-danger btn-lg">Total ${{total}}</button>
-  <a href="/customer-address"><button class="btn btn-success btn-lg" ><span>Purchase </span></button></a>
+    <button class="btn btn-danger btn-lg">Total Rs <span id="grand-total">{{ total }}</span></button>
+    <a href="/customer-address"><button class="btn btn-success btn-lg"><span>Purchase</span></button></a>
 </div>
 
+<script>
+    $(document).ready(function () {
+        function updateTotal() {
+            let grandTotal = 0;
+            $('.total-price').each(function () {
+                grandTotal += parseFloat($(this).text());
+            });
+            $('#grand-total').text(grandTotal.toFixed(2));
+        }
 
-<br><br><br><br><br>
-<!--
-developed By : Naem Azam
--->
+        function updateQuantity(row, quantity) {
+            const productId = row.data('id');
+            $.ajax({
+                url: `/update-quantity/${productId}/${quantity}/`,
+                type: 'POST',
+                data: {
+                    'csrfmiddlewaretoken': '{{ csrf_token }}',
+                },
+                success: function (response) {
+                    row.find('.total-price').text(response.total_price.toFixed(2));
+                    updateTotal();
+                }
+            });
+        }
+
+        $('.increase-quantity').click(function () {
+            const row = $(this).closest('tr');
+            const quantityInput = row.find('.quantity');
+            let quantity = parseInt(quantityInput.val());
+            quantity += 1;
+            quantityInput.val(quantity);
+            updateQuantity(row, quantity);
+        });
+
+        $('.decrease-quantity').click(function () {
+            const row = $(this).closest('tr');
+            const quantityInput = row.find('.quantity');
+            let quantity = parseInt(quantityInput.val());
+            if (quantity > 1) {
+                quantity -= 1;
+                quantityInput.val(quantity);
+                updateQuantity(row, quantity);
+            }
+        });
+    });
+</script>
 {% endblock content %}

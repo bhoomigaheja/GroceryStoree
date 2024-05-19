@@ -256,28 +256,40 @@ def add_to_cart_view(request,pk):
 
 
 # for checkout of cart
+from django.shortcuts import render
+from . import models
+
+from django.shortcuts import render, redirect
+from django.http import JsonResponse
+from . import models
+
 def cart_view(request):
-    #for cart counter
     if 'product_ids' in request.COOKIES:
         product_ids = request.COOKIES['product_ids']
-        counter=product_ids.split('|')
-        product_count_in_cart=len(set(counter))
+        product_count_in_cart = len(set(product_ids.split('|')))
     else:
-        product_count_in_cart=0
+        product_count_in_cart = 0
 
-    # fetching product details from db whose id is present in cookie
-    products=None
-    total=0
+    products = []
+    total = 0
     if 'product_ids' in request.COOKIES:
         product_ids = request.COOKIES['product_ids']
-        if product_ids != "":
-            product_id_in_cart=product_ids.split('|')
-            products=models.Product.objects.all().filter(id__in = product_id_in_cart)
-
-            #for total price shown in cart
+        if product_ids:
+            product_id_in_cart = product_ids.split('|')
+            products = models.Product.objects.filter(id__in=product_id_in_cart)
             for p in products:
-                total=total+p.price
-    return render(request,'ecom/cart.html',{'products':products,'total':total,'product_count_in_cart':product_count_in_cart})
+                p.total_price = p.price * p.quantity
+                total += p.total_price
+
+    return render(request, 'ecom/cart.html', {'products': products, 'total': total, 'product_count_in_cart': product_count_in_cart})
+
+def update_quantity(request, product_id, quantity):
+    if request.method == "POST":
+        product = models.Product.objects.get(id=product_id)
+        product.quantity = quantity
+        product.save()
+        total_price = product.price * product.quantity
+        return JsonResponse({'total_price': total_price})
 
 
 def remove_from_cart_view(request,pk):
@@ -313,6 +325,7 @@ def remove_from_cart_view(request,pk):
             response.delete_cookie('product_ids')
         response.set_cookie('product_ids',value)
         return response
+from django.http import JsonResponse
 
 
 def send_feedback_view(request):

@@ -9,6 +9,7 @@ https://docs.djangoproject.com/en/3.0/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.0/ref/settings/
 """
+import dj_database_url
 
 import os
 
@@ -22,12 +23,12 @@ STATIC_DIR=os.path.join(BASE_DIR,'static')
 # See https://docs.djangoproject.com/en/3.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = '#vw(03o=(9kbvg!&2d5i!2$_58x@_-3l4wujpow6(ym37jxnza'
+SECRET_KEY = os.environ.get("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.environ.get("DEBUG","FALSE").lower()== "true"
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = os.environ.get("ALLOWED_HOSTS", "*").split(",")
 
 
 # Application definition
@@ -79,14 +80,27 @@ WSGI_APPLICATION = 'ecommerce.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
 
+TIME_ZONE = 'UTC'
+
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'root_kao9',
+        'USER': 'root_kao9_user',
+        'PASSWORD': 'oGzcELSBH9SfhJDXIz71a0jaFNUwgsn3',
+        'HOST': 'dpg-cp4oj88cmk4c73emvetg-a.singapore-postgres.render.com',
+        'PORT': '5432',
+        'OPTIONS': {
+            'options': '-c timezone=UTC'
+        },
+        'ATOMIC_REQUESTS': True,  # Ensure transactions are set to use UTC timezone
     }
 }
 
 
+
+
+#postgres://root_ghvm_user:ElpNbOQUUxCo6JEf9AMxkvLUQQ0j0RqN@dpg-cp4noi21hbls73f42qs0-a.oregon-postgres.render.com/root_ghvm")
 # Password validation
 # https://docs.djangoproject.com/en/3.0/ref/settings/#auth-password-validators
 
@@ -117,7 +131,7 @@ USE_I18N = True
 
 USE_L10N = True
 
-USE_TZ = True
+
 
 
 # Static files (CSS, JavaScript, Images)
@@ -146,3 +160,7 @@ EMAIL_HOST_PASSWORD = 'xyz' # host email password required
 # otherwise you will get SMTPAuthenticationError at /contactus
 # this process is required because google blocks apps authentication by default
 EMAIL_RECEIVING_USER = ['to@gmail.com'] # email on which you will receive messages sent from website
+import dj_database_url
+DATABASE_URL = "postgres://root_kao9_user:oGzcELSBH9SfhJDXIz71a0jaFNUwgsn3@dpg-cp4oj88cmk4c73emvetg-a.singapore-postgres.render.com/root_kao9"
+
+DATABASE_URL = os.environ.get("DATABASE_URL")
