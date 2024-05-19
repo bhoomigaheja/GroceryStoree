@@ -1,10 +1,4 @@
 #!/usr/bin/env python
-"""Django's command-line utility for administrative tasks."""
-import os
-import sys
-
-
-#!/usr/bin/env python
 import os
 import sys
 
@@ -21,8 +15,14 @@ def main():
 
     # Set the port for Render.com
     port = os.environ.get('PORT', '8000')
+    
+    # Check if 'runserver' is in the command and if there is enough space to insert the port
     if 'runserver' in sys.argv:
-        sys.argv[sys.argv.index('runserver') + 1] = f'0.0.0.0:{port}'
+        runserver_index = sys.argv.index('runserver')
+        if len(sys.argv) == runserver_index + 1:
+            sys.argv.append(f'0.0.0.0:{port}')
+        else:
+            sys.argv[runserver_index + 1] = f'0.0.0.0:{port}'
     
     execute_from_command_line(sys.argv)
 
