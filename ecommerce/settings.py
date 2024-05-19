@@ -23,10 +23,10 @@ STATIC_DIR=os.path.join(BASE_DIR,'static')
 # See https://docs.djangoproject.com/en/3.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.environ.get("SECRET_KEY")
+SECRET_KEY = '#vw(03o=(9kbvg!&2d5i!2$_58x@_-3l4wujpow6(ym37jxnza'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.environ.get("DEBUG","FALSE").lower()== "true"
+DEBUG = True
 
 ALLOWED_HOSTS = os.environ.get("ALLOWED_HOSTS", "*").split(",")
 
@@ -80,7 +80,6 @@ WSGI_APPLICATION = 'ecommerce.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
 
-TIME_ZONE = 'UTC'
 
 DATABASES = {
     'default': {
@@ -89,11 +88,11 @@ DATABASES = {
         'USER': 'root_kao9_user',
         'PASSWORD': 'oGzcELSBH9SfhJDXIz71a0jaFNUwgsn3',
         'HOST': 'dpg-cp4oj88cmk4c73emvetg-a.singapore-postgres.render.com',
+        
         'PORT': '5432',
         'OPTIONS': {
             'options': '-c timezone=UTC'
         },
-        'ATOMIC_REQUESTS': True,  # Ensure transactions are set to use UTC timezone
     }
 }
 
