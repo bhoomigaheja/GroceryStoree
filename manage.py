@@ -19,11 +19,11 @@ def main():
     # Modify sys.argv to include the port if 'runserver' is in the command
     if 'runserver' in sys.argv:
         addrport_index = sys.argv.index('runserver') + 1
+        # Check if the 'runserver' argument has been provided with the port already
         if len(sys.argv) > addrport_index and ':' not in sys.argv[addrport_index]:
-            sys.argv.insert(addrport_index, f'0.0.0.0:{port}')
+            sys.argv[addrport_index] = f'0.0.0.0:{port}'
         else:
-            sys.argv.insert(addrport_index, '0.0.0.0')
-            sys.argv.insert(addrport_index + 1, port)
+            sys.argv.insert(addrport_index, f'0.0.0.0:{port}')
 
     execute_from_command_line(sys.argv)
 
