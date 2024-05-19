@@ -1,8 +1,9 @@
+
 Django==3.0.5
-django-widget-tweaks==1.4.8
+django-widget-tweaks
 sqlparse==0.3.1
+dj_database_url
+Django
 xhtml2pdf
-six
-psycopg2==2.9.9
-psycopg2-binary==2.9.9
-dj-database-url==0.5.0
+gunicorn
+psycopg2-binary
